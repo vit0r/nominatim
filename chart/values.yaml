@@ -47,6 +47,8 @@ nominatim:
     maxReplicas: 100
     targetCPUUtilizationPercentage: 80
     # targetMemoryUtilizationPercentage: 80
+  persistence:
+    storageClassName: ~
 postgres:
   replicaCount: 1
   image:
@@ -76,6 +78,8 @@ postgres:
     # requests:
     #   cpu: 100m
     #   memory: 128Mi
+  persistence:
+    storageClassName: ~
 nodeSelector: {}
 tolerations: []
 affinity: {}

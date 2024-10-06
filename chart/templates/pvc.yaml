@@ -6,11 +6,12 @@ metadata:
   labels:
     {{- include "nominatim.labels" . | nindent 4 }}
 spec:
+  storageClassName: {{ .Values.nominatim.persistence.storageClassName }}
   resources:
     requests:
-      storage: 10G
+      storage: {{ .Values.nominatim.persistence.size | default "10G" }}
   accessModes:
-    - ReadWriteOnce
+    - {{ .Values.nominatim.persistence.accessMode | default "ReadWriteOnce" }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -20,8 +21,9 @@ metadata:
   labels:
     {{- include "nominatim.labels" . | nindent 4 }}
 spec:
+  storageClassName: {{ .Values.postgres.persistence.storageClassName }}
   resources:
     requests:
-      storage: 50G
+      storage: {{ .Values.postgres.persistence.size | default "50G" }}
   accessModes:
-    - ReadWriteOnce
+    - {{ .Values.postgres.persistence.accessMode | default "ReadWriteOnce" }}
