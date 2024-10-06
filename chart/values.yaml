@@ -54,10 +54,6 @@ postgres:
     pullPolicy: IfNotPresent
     tag: 13
   imagePullSecrets: []
-  serviceAccount:
-    create: true
-    annotations: {}
-    name: "nominatim-postgres"
   podAnnotations: {}
   podSecurityContext:
     {}
@@ -71,7 +67,7 @@ postgres:
     runAsUser: 1000
   service:
     type: ClusterIP
-    port: 8080
+    port: 5432
   resources:
     {}
     # limits:
@@ -80,12 +76,6 @@ postgres:
     # requests:
     #   cpu: 100m
     #   memory: 128Mi
-  autoscaling:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
-    # targetMemoryUtilizationPercentage: 80
 nodeSelector: {}
 tolerations: []
 affinity: {}

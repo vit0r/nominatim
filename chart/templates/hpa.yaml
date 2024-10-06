@@ -1,4 +1,4 @@
-{{- if .Values.autoscaling.enabled }}
+{{- if .Values.nominatim.autoscaling.enabled }}
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
@@ -11,19 +11,19 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: {{ include "nominatim.fullname" . }}
-  minReplicas: {{ .Values.autoscaling.minReplicas }}
-  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
+  minReplicas: {{ .Values.nominatim.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.nominatim.autoscaling.maxReplicas }}
   metrics:
-    {{- if .Values.autoscaling.targetCPUUtilizationPercentage }}
+    {{- if .Values.nominatim.autoscaling.targetCPUUtilizationPercentage }}
     - type: Resource
       resource:
         name: cpu
-        targetAverageUtilization: {{ .Values.autoscaling.targetCPUUtilizationPercentage }}
+        targetAverageUtilization: {{ .Values.nominatim.autoscaling.targetCPUUtilizationPercentage }}
     {{- end }}
-    {{- if .Values.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- if .Values.nominatim.autoscaling.targetMemoryUtilizationPercentage }}
     - type: Resource
       resource:
         name: memory
-        targetAverageUtilization: {{ .Values.autoscaling.targetMemoryUtilizationPercentage }}
+        targetAverageUtilization: {{ .Values.nominatim.autoscaling.targetMemoryUtilizationPercentage }}
     {{- end }}
 {{- end }}

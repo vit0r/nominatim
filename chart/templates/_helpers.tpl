@@ -54,9 +54,9 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Create the name of the service account to use
 */}}
 {{- define "nominatim.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "nominatim.fullname" .) .Values.serviceAccount.name }}
+{{- if .Values.nominatim.serviceAccount.create }}
+{{- default (include "nominatim.fullname" .) .Values.nominatim.serviceAccount.name }}
 {{- else }}
-{{- default "default" .Values.serviceAccount.name }}
+{{- default "default" .Values.nominatim.serviceAccount.name }}
 {{- end }}
 {{- end }}

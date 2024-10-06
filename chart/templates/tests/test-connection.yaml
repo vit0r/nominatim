@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "nominatim.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ include "nominatim.fullname" . }}:{{ .Values.nominatim.service.port }}']
   restartPolicy: Never

@@ -6,27 +6,22 @@ metadata:
   labels:
     {{- include "nominatim.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.nominatim.service.type }}
-  ports:
-    - port: {{ .Values.nominatim.service.port }}
-      targetPort: {{ .Values.nominatim.service.port }}
-      protocol: TCP
-      name: http
-  selector:
-    {{- include "nominatim.selectorLabels" . | nindent 4 }}
+  resources:
+    requests:
+      storage: 10G
+  accessModes:
+    - ReadWriteOnce
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ include "nominatim.fullname" . }}-postgres
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "nominatim.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.postgres.service.type }}
-  ports:
-    - port: {{ .Values.postgres.service.port }}
-      targetPort: {{ .Values.postgres.service.containerPort }}
-      protocol: TCP
-      name: postgres
-  selector:
-    {{- include "nominatim.selectorLabels" . | nindent 4 }}
+  resources:
+    requests:
+      storage: 50G
+  accessModes:
+    - ReadWriteOnce
