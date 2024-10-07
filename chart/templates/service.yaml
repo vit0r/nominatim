@@ -18,7 +18,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "nominatim.fullname" . }}-postgres
+  name: postgres
   labels:
     {{- include "nominatim.labels" . | nindent 4 }}
 spec:

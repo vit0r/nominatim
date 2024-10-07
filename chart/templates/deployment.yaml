@@ -21,6 +21,7 @@ spec:
       labels:
         {{- include "nominatim.selectorLabels" . | nindent 8 }}
     spec:
+      setHostnameAsFQDN: true
       {{- with .Values.nominatim.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -28,17 +29,44 @@ spec:
       serviceAccountName: {{ include "nominatim.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.nominatim.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: nominatim-download-pbf
+          securityContext:
+            {{- toYaml .Values.nominatim.securityContext | nindent 12 }}
+          image: "{{ .Values.nominatim.image.repository }}:{{ .Values.nominatim.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.nominatim.image.pullPolicy }}
+          command: ["/init"] 
+          env:
+            - name: NOMINATIM_PBF
+              value: {{ .Values.init.pbf_url }} 
+          volumeMounts:
+            - name: nominatim
+              mountPath: /data
       containers:
-        - name: {{ .Chart.Name }}-postgres
+        - name: postgresql
           securityContext:
             {{- toYaml .Values.postgres.securityContext | nindent 12 }}
           image: "{{ .Values.postgres.image.repository }}:{{ .Values.postgres.image.tag }}"
           imagePullPolicy: {{ .Values.postgres.image.pullPolicy }}
+          env:
+            - name: POSTGRES_USER
+              value: nominatim
+            - name: POSTGRES_PASSWORD
+              value: nominatim
+            - name: POSTGRES_DB
+              value: nominatim
+            - name: PGDATA
+              value: /data/postgres
+            - name: LANG
+              value: en_US.utf8
           ports:
             - name: tcp
-              containerPort: 5432
+              containerPort: {{.Values.postgres.service.port}}
               protocol: TCP
-              port: 5432
+              port: {{.Values.postgres.service.port}}
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /data
           resources:
             {{- toYaml .Values.postgres.resources | nindent 12 }}
         - name: {{ .Chart.Name }}
@@ -48,16 +76,27 @@ spec:
           imagePullPolicy: {{ .Values.nominatim.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.nominatim.containerPort | default 8080 }}
+              containerPort: {{ .Values.nominatim.containerPort | default 8000 }}
               protocol: TCP
+          env:
+            - name: NOMINATIM_DATABASE_DSN
+              value: pgsql:host=localhost;port={{.Values.postgres.service.port}};user=nominatim;password=nominatim;dbname=nominatim
+            - name: NOMINATIM_VERSION
+              value: {{ .Chart.AppVersion }}
+            - name: NOMINATIM_IMPORT_STYLE
+              value: {{ .Values.nominatim.import_style | default "address" }}
           livenessProbe:
-            httpGet:
-              path: /
-              port: http
+            tcpSocket:
+              port: {{.Values.postgres.service.port}}
+              initialDelaySeconds: 5
+              periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /
               port: http
+          volumeMounts:
+            - name: nominatim
+              mountPath: /data
           resources:
             {{- toYaml .Values.nominatim.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
@@ -72,3 +111,13 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+        - name: nominatim
+          persistentVolumeClaim:
+            claimName: nominatim
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: nominatim-postgres
+        # - name: postgres-run
+        #   persistentVolumeClaim:
+        #     claimName: nominatim-postgres

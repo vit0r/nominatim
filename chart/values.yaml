@@ -1,25 +1,29 @@
+init:
+  pbf_url: https://download.geofabrik.de/south-america/brazil-latest.osm.pbf
 nominatim:
   replicaCount: 1
   image:
     repository: vit0r/nominatim
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
     tag: ~
   serviceAccount:
     create: true
     annotations: {}
     name: "nominatim"
   podAnnotations: {}
-  podSecurityContext: {}
   securityContext:
     capabilities:
       drop:
         - ALL
-    readOnlyRootFilesystem: true
+    readOnlyRootFilesystem: false
     runAsNonRoot: true
-    runAsUser: 1000
+    runAsUser: 1001
+  podSecurityContext: {}
+  persistence:
+    storageClassName: nfs
   service:
     type: ClusterIP
-    port: 8080
+    port: 8000
   ingress:
     enabled: false
     className: "nginx"
@@ -47,8 +51,6 @@ nominatim:
     maxReplicas: 100
     targetCPUUtilizationPercentage: 80
     # targetMemoryUtilizationPercentage: 80
-  persistence:
-    storageClassName: ~
 postgres:
   replicaCount: 1
   image:
@@ -57,29 +59,26 @@ postgres:
     tag: 13
   imagePullSecrets: []
   podAnnotations: {}
-  podSecurityContext:
-    {}
-    # fsGroup: 2000
+  persistence:
+    storageClassName: nfs
   securityContext:
     capabilities:
       drop:
         - ALL
-    readOnlyRootFilesystem: true
+    readOnlyRootFilesystem: false
     runAsNonRoot: true
     runAsUser: 1000
   service:
     type: ClusterIP
     port: 5432
   resources:
-    {}
     # limits:
+    {}
     #   cpu: 100m
     #   memory: 128Mi
     # requests:
     #   cpu: 100m
     #   memory: 128Mi
-  persistence:
-    storageClassName: ~
 nodeSelector: {}
 tolerations: []
 affinity: {}
