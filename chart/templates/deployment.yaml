@@ -30,12 +30,11 @@ spec:
       securityContext:
         {{- toYaml .Values.nominatim.podSecurityContext | nindent 8 }}
       initContainers:
-        - name: nominatim-download-pbf
+        - name: nominatim-init
           securityContext:
             {{- toYaml .Values.nominatim.securityContext | nindent 12 }}
-          image: "{{ .Values.nominatim.image.repository }}:{{ .Values.nominatim.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.nominatim.image.pullPolicy }}
-          command: ["/init"] 
+          image: "{{ .Values.init.image.repository }}:{{ .Values.init.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.init.image.pullPolicy }}
           env:
             - name: NOMINATIM_PBF
               value: {{ .Values.init.pbf_url }} 

@@ -1,18 +1,13 @@
-
-FROM ubuntu:24.04
+FROM ubuntu:24.04 as nominatim
 
 ARG NOMINATIM_VERSION=4.5.0
-
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8
 ENV USERNAME=nominatim
 ENV USERHOME=/home/nominatim
 ENV PATH=${PATH}:${USERHOME}/.local/bin
-
 RUN useradd -u 1001 -ms /bin/bash ${USERNAME}
-
 WORKDIR ${USERHOME}
-
 RUN apt-get update -qq && apt-get -y install \
     locales apt-utils \
     && locale-gen en_US.UTF-8 \
@@ -45,8 +40,8 @@ RUN apt-get update -qq && apt-get -y install \
     python3-psycopg \
     python3-sqlalchemy \
     python3-asyncpg \
-    postgresql-client
-
+    postgresql-client \
+    postgis
 RUN wget --no-check-certificate \
     https://www.nominatim.org/release/Nominatim-${NOMINATIM_VERSION}.tar.bz2 \
     -O nominatim.tar.bz2 \
@@ -60,13 +55,22 @@ RUN wget --no-check-certificate \
 RUN rm -rf nominatim.tar.bz2
 RUN rm -rf build
 RUN chown $USERNAME:root -R Nominatim-$NOMINATIM_VERSION
-ADD init.sh /init
 ADD entrypoint.sh /entrypoint
 RUN chmod +x /entrypoint
-RUN chmod +x /init
 USER ${USERNAME}
 RUN pip install --break-system-packages --no-cache Nominatim-$NOMINATIM_VERSION/packaging/nominatim-api
 RUN pip install --break-system-packages --no-cache falcon uvicorn gunicorn
 RUN rm -rf Nominatim-$NOMINATIM_VERSION
 EXPOSE 8000
 ENTRYPOINT [ "/entrypoint" ]
+
+FROM debian:bookworm-slim as nominatim-init
+
+ADD init.sh /entrypoint
+RUN chmod +x /entrypoint
+USER ${USERNAME}
+ENTRYPOINT [ "/entrypoint" ]
+
+FROM postgres:13.10-alpine as postgres
+
+RUN apk update && apk add postgis

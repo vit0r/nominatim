@@ -1,4 +1,8 @@
 init:
+  image:
+    repository: vit0r/nominatim-init
+    pullPolicy: Always
+    tag: ~
   pbf_url: https://download.geofabrik.de/south-america/brazil-latest.osm.pbf
 nominatim:
   replicaCount: 1
@@ -54,7 +58,7 @@ nominatim:
 postgres:
   replicaCount: 1
   image:
-    repository: postgres
+    repository: vit0r/postgres
     pullPolicy: IfNotPresent
     tag: 13
   imagePullSecrets: []
