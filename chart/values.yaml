@@ -24,7 +24,7 @@ nominatim:
     runAsUser: 1001
   podSecurityContext: {}
   persistence:
-    storageClassName: nfs
+    storageClassName: standard
   service:
     type: ClusterIP
     port: 8000
@@ -43,12 +43,12 @@ nominatim:
     #      - nominatim.local
   resources:
     {}
-    # limits:
-    #   cpu: 100m
-    #   memory: 128Mi
     # requests:
-    #   cpu: 100m
-    #   memory: 128Mi
+    #   cpu: 200m
+    #   memory: 512Mi
+    # limits:
+    #   cpu: 500m
+    #   memory: 1Gi
   autoscaling:
     enabled: false
     minReplicas: 1
@@ -59,33 +59,32 @@ postgres:
   replicaCount: 1
   image:
     repository: vit0r/postgres
-    pullPolicy: IfNotPresent
-    tag: 13
+    pullPolicy: Always
+    tag: 4.5.0
   imagePullSecrets: []
   podAnnotations: {}
   persistence:
-    storageClassName: nfs
+    storageClassName: standard
   securityContext:
-    capabilities:
-      drop:
-        - ALL
     readOnlyRootFilesystem: false
-    runAsNonRoot: true
-    runAsUser: 1000
+    runAsNonRoot: false
+    runAsUser: 101
   service:
     type: ClusterIP
     port: 5432
   resources:
-    # limits:
     {}
-    #   cpu: 100m
-    #   memory: 128Mi
+    # limits:
+    #   cpu: 500m
+    #   memory: 2Gi
     # requests:
-    #   cpu: 100m
-    #   memory: 128Mi
+    #   cpu: 200m
+    #   memory: 512Mi
 nodeSelector: {}
 tolerations: []
 affinity: {}
 imagePullSecrets: []
 nameOverride: "nominatim"
 fullnameOverride: "nominatim"
+strategy:
+  type: Recreate

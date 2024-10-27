@@ -6,6 +6,10 @@ metadata:
   labels:
     {{- include "nominatim.labels" . | nindent 4 }}
 spec:
+  {{- if .Values.strategy.type }}
+  strategy: 
+    type: {{ .Values.strategy.type }}
+  {{- end }}
   {{- if not .Values.nominatim.autoscaling.enabled }}
   replicas: {{ .Values.nominatim.replicaCount }}
   {{- end }}
@@ -37,7 +41,7 @@ spec:
           imagePullPolicy: {{ .Values.init.image.pullPolicy }}
           env:
             - name: NOMINATIM_PBF
-              value: {{ .Values.init.pbf_url }} 
+              value: {{ .Values.init.pbf_url }}
           volumeMounts:
             - name: nominatim
               mountPath: /data
@@ -47,17 +51,6 @@ spec:
             {{- toYaml .Values.postgres.securityContext | nindent 12 }}
           image: "{{ .Values.postgres.image.repository }}:{{ .Values.postgres.image.tag }}"
           imagePullPolicy: {{ .Values.postgres.image.pullPolicy }}
-          env:
-            - name: POSTGRES_USER
-              value: nominatim
-            - name: POSTGRES_PASSWORD
-              value: nominatim
-            - name: POSTGRES_DB
-              value: nominatim
-            - name: PGDATA
-              value: /data/postgres
-            - name: LANG
-              value: en_US.utf8
           ports:
             - name: tcp
               containerPort: {{.Values.postgres.service.port}}
@@ -79,16 +72,25 @@ spec:
               protocol: TCP
           env:
             - name: NOMINATIM_DATABASE_DSN
-              value: pgsql:host=localhost;port={{.Values.postgres.service.port}};user=nominatim;password=nominatim;dbname=nominatim
+              value: pgsql:host=127.0.0.1;port={{.Values.postgres.service.port}};user=nominatim;password=nominatim;dbname=nominatim
             - name: NOMINATIM_VERSION
               value: {{ .Chart.AppVersion }}
             - name: NOMINATIM_IMPORT_STYLE
               value: {{ .Values.nominatim.import_style | default "address" }}
-          livenessProbe:
-            tcpSocket:
-              port: {{.Values.postgres.service.port}}
-              initialDelaySeconds: 5
-              periodSeconds: 10
+            - name: POSTGRES_DB
+              value: nominatim
+            - name: NOMINATIM_TOKENIZER
+              value: icu
+            - name: NOMINATIM_FLATNODE_FILE
+              value: ""
+            - name: NOMINATIM_QUERY_TIMEOUT
+              value: "600"
+            - name: NOMINATIM_REQUEST_TIMEOUT
+              value: "3600"
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
           readinessProbe:
             httpGet:
               path: /
@@ -117,6 +119,3 @@ spec:
         - name: postgres-data
           persistentVolumeClaim:
             claimName: nominatim-postgres
-        # - name: postgres-run
-        #   persistentVolumeClaim:
-        #     claimName: nominatim-postgres

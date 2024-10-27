@@ -1,6 +1,5 @@
-FROM ubuntu:24.04 as nominatim
 
-ARG NOMINATIM_VERSION=4.5.0
+FROM ubuntu:24.04 as nominatim
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8
 ENV USERNAME=nominatim
@@ -16,6 +15,7 @@ RUN apt-get update -qq && apt-get -y install \
     -o APT::Install-Recommends="false" \
     -o APT::Install-Suggests="false" \
     build-essential \
+    net-tools \
     cmake \
     wget \
     libpq-dev \
@@ -40,8 +40,8 @@ RUN apt-get update -qq && apt-get -y install \
     python3-psycopg \
     python3-sqlalchemy \
     python3-asyncpg \
-    postgresql-client \
-    postgis
+    postgresql-client
+ENV NOMINATIM_VERSION=4.5.0
 RUN wget --no-check-certificate \
     https://www.nominatim.org/release/Nominatim-${NOMINATIM_VERSION}.tar.bz2 \
     -O nominatim.tar.bz2 \
@@ -55,7 +55,7 @@ RUN wget --no-check-certificate \
 RUN rm -rf nominatim.tar.bz2
 RUN rm -rf build
 RUN chown $USERNAME:root -R Nominatim-$NOMINATIM_VERSION
-ADD entrypoint.sh /entrypoint
+ADD nominatim.sh /entrypoint
 RUN chmod +x /entrypoint
 USER ${USERNAME}
 RUN pip install --break-system-packages --no-cache Nominatim-$NOMINATIM_VERSION/packaging/nominatim-api
@@ -65,12 +65,37 @@ EXPOSE 8000
 ENTRYPOINT [ "/entrypoint" ]
 
 FROM debian:bookworm-slim as nominatim-init
-
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LANG=C.UTF-8
+ENV USERNAME=nominatim
+ENV USERHOME=/home/nominatim
+ENV PATH=${PATH}:${USERHOME}/.local/bin
+RUN useradd -u 1001 -ms /bin/bash ${USERNAME}
+WORKDIR ${USERHOME}
+RUN apt update && apt install wget -y
 ADD init.sh /entrypoint
 RUN chmod +x /entrypoint
 USER ${USERNAME}
 ENTRYPOINT [ "/entrypoint" ]
 
-FROM postgres:13.10-alpine as postgres
-
-RUN apk update && apk add postgis
+FROM ubuntu:24.04 as postgres
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LANG=C.UTF-8
+ENV PGUSER=postgres
+ENV PGPASSWORD=postgres
+ENV PGDATABASE=postgres
+ENV PGTZ=America/Sao_Paulo
+RUN apt update && apt install -y wget curl gpg net-tools
+ENV POSTGRES_VERSION=17
+ENV PGDATA=/data/postgres/${POSTGRES_VERSION}
+ENV PATH=${PATH}:/usr/lib/postgresql/$POSTGRES_VERSION/bin
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt noble-pgdg main" > /etc/apt/sources.list.d/pgdg.list
+RUN curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor \
+    -o /etc/apt/trusted.gpg.d/postgresql.gpg
+RUN apt update && apt install -y postgresql-contrib \
+    postgresql-server-dev-${POSTGRES_VERSION} \
+    postgresql-${POSTGRES_VERSION}-postgis-3 \
+    postgresql-${POSTGRES_VERSION}-postgis-3-scripts
+ADD postgresql.sh /entrypoint
+RUN chmod +x /entrypoint
+ENTRYPOINT [ "/entrypoint" ]
