@@ -72,7 +72,7 @@ ENV USERHOME=/home/nominatim
 ENV PATH=${PATH}:${USERHOME}/.local/bin
 RUN useradd -u 1001 -ms /bin/bash ${USERNAME}
 WORKDIR ${USERHOME}
-RUN apt update && apt install wget -y
+RUN apt update && apt install wget vim -y
 ADD init.sh /entrypoint
 RUN chmod +x /entrypoint
 USER ${USERNAME}
@@ -85,7 +85,7 @@ ENV PGUSER=postgres
 ENV PGPASSWORD=postgres
 ENV PGDATABASE=postgres
 ENV PGTZ=America/Sao_Paulo
-RUN apt update && apt install -y wget curl gpg net-tools
+RUN apt update && apt install -y wget curl gpg net-tools vim
 ENV POSTGRES_VERSION=17
 ENV PGDATA=/data/postgres/${POSTGRES_VERSION}
 ENV PATH=${PATH}:/usr/lib/postgresql/$POSTGRES_VERSION/bin
@@ -98,4 +98,10 @@ RUN apt update && apt install -y postgresql-contrib \
     postgresql-${POSTGRES_VERSION}-postgis-3-scripts
 ADD postgresql.sh /entrypoint
 RUN chmod +x /entrypoint
+ENTRYPOINT [ "/entrypoint" ]
+
+FROM nominatim as nominatim-update
+ADD update.sh /entrypoint
+RUN chmod +x /entrypoint
+USER ${USERNAME}
 ENTRYPOINT [ "/entrypoint" ]
