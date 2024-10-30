@@ -1,4 +1,4 @@
-name: bkp_mariadb
+name: nominatim
 on:
   push:
     branches:
