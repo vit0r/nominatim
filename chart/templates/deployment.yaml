@@ -79,22 +79,25 @@ spec:
               value: {{ .Values.nominatim.import_style | default "address" }}
             - name: POSTGRES_DB
               value: nominatim
-            - name: NOMINATIM_TOKENIZER
-              value: icu
-            - name: NOMINATIM_FLATNODE_FILE
-              value: ""
-            - name: NOMINATIM_QUERY_TIMEOUT
-              value: "600"
-            - name: NOMINATIM_REQUEST_TIMEOUT
-              value: "3600"
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
+            # - name: NOMINATIM_TOKENIZER
+            #   value: icu
+            # - name: NOMINATIM_FLATNODE_FILE
+            #   value: ""
+            # - name: NOMINATIM_QUERY_TIMEOUT
+            #   value: "600"
+            # - name: NOMINATIM_REQUEST_TIMEOUT
+            #   value: "3600"
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 300
           readinessProbe:
             httpGet:
-              path: /
+              path: /status?format=json
               port: http
+            initialDelaySeconds: 5
+            periodSeconds: 600
           volumeMounts:
             - name: nominatim
               mountPath: /data
