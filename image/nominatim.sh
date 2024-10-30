@@ -8,6 +8,7 @@ done
 if [ ! -f "/data/import.log" ]; then
     echo "iniciar import"
     nominatim import --osm-file /data/latest.osm.pbf --verbose
+    nominatim import --continue indexing --index-noanalyse --verbose
     nominatim admin --check-database
     echo "import ok $(date)" > /data/import.log
 fi
