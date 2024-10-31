@@ -29,7 +29,7 @@ nominatim:
     type: ClusterIP
     port: 8000
   ingress:
-    enabled: false
+    enabled: true
     className: "nginx"
     annotations: {}
     hosts:
@@ -43,10 +43,10 @@ nominatim:
     #      - nominatim.local
   resources:
     requests:
-      cpu: 2000m
+      cpu: 1000m
       memory: 2Gi
     limits:
-      cpu: 5000m
+      cpu: 2000m
       memory: 4Gi
   autoscaling:
     enabled: false
@@ -73,10 +73,10 @@ postgres:
     port: 5432
   resources:
     limits:
-      cpu: 5000m
+      cpu: 2000m
       memory: 4Gi
     requests:
-      cpu: 2000m
+      cpu: 1000m
       memory: 2Gi
 update:
   image:
