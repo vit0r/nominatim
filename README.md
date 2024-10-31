@@ -16,7 +16,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main
 
 ```console
 # run as sudo
-echo "127.0.0.1 nominatim" >> /etc/hosts
+echo "127.0.0.1 nominatim.local" >> /etc/hosts
 ```
 
 ## install helm
