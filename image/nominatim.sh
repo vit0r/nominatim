@@ -8,11 +8,7 @@ done
 if [ ! -f "/data/import.log" ]; then
     echo "iniciar import"
     nominatim import --osm-file /data/latest.osm.pbf --verbose
-    nominatim import --continue indexing --index-noanalyse --verbose
-    nominatim admin --check-database
+    nominatim import --continue indexing --verbose
     echo "imported $(date)" > /data/import.log
 fi
-echo > /data/api-access.log
-echo > /data/api-error.log
-gunicorn --bind 0.0.0.0:8000 --access-logfile /data/api-access.log --error-logfile /data/api-error.log -b unix:/data/nominatim.sock -k uvicorn.workers.UvicornWorker nominatim_api.server.falcon.server:run_wsgi
-tail -f /data/api-access.log
+gunicorn --bind 0.0.0.0:8000 --access-logfile - --error-logfile - --capture-output --factory -b unix:/data/nominatim.sock -k uvicorn.workers.UvicornWorker nominatim_api.server.falcon.server:run_wsgi
