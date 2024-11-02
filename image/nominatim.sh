@@ -11,4 +11,4 @@ if [ ! -f "/data/import.log" ]; then
     nominatim import --continue indexing --verbose
     echo "imported $(date)" > /data/import.log
 fi
-gunicorn --bind 0.0.0.0:8000 --access-logfile - --error-logfile - --capture-output --factory -b unix:/data/nominatim.sock -k uvicorn.workers.UvicornWorker nominatim_api.server.falcon.server:run_wsgi
+gunicorn --bind 0.0.0.0:8000 --access-logfile - --error-logfile - --capture-output -b unix:/data/nominatim.sock -k uvicorn.workers.UvicornWorker nominatim_api.server.falcon.server:run_wsgi
