@@ -24,7 +24,7 @@ if [ ! -d $PGDATA ]; then
     echo "fsync = off" >> $PGDATA/postgresql.conf
     echo "full_page_writes = off" >> $PGDATA/postgresql.conf
     sed -i 's/shared_buffers = 128MB/shared_buffers = 2GB/' $PGDATA/postgresql.conf
-    sed -i 's/max_wal_size = 1GB/max_wal_size = 2GB/' $PGDATA/postgresql.conf
+    sed -i 's/max_wal_size = 1GB/max_wal_size = 4GB/' $PGDATA/postgresql.conf
 fi
 pg_ctl -w -m immediate -l $PGDATA/postgres.log -o "-c config_file=$PGDATA/postgresql.conf" start
 psql -U postgres -d postgres -c "CREATE ROLE nominatim WITH LOGIN PASSWORD 'nominatim' SUPERUSER;"
