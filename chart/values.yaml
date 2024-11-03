@@ -10,6 +10,8 @@ nominatim:
     repository: vit0r/nominatim
     pullPolicy: IfNotPresent
     tag: ~
+  replication:
+    url: https://download.geofabrik.de/south-america/brazil-updates
   serviceAccount:
     create: true
     annotations: {}

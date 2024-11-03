@@ -99,9 +99,3 @@ RUN apt update && apt install -y postgresql-contrib \
 ADD postgresql.sh /entrypoint
 RUN chmod +x /entrypoint
 ENTRYPOINT [ "/entrypoint" ]
-
-FROM nominatim as nominatim-update
-ADD update.sh /entrypoint
-RUN chmod +x /entrypoint
-USER ${USERNAME}
-ENTRYPOINT [ "/entrypoint" ]
