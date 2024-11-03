@@ -8,13 +8,11 @@ if [ ! -d $PGDATA ]; then
     echo "host all nominatim ::1/128 trust" >> $PGDATA/pg_hba.conf
     echo "host nominatim www-data 127.0.0.1/32 trust" >> $PGDATA/pg_hba.conf
     echo "host nominatim www-data ::1/128 trust" >> $PGDATA/pg_hba.conf
-    echo "shared_buffers = 2GB" >> $PGDATA/postgresql.conf
     echo "maintenance_work_mem = 10GB" >> $PGDATA/postgresql.conf
     echo "autovacuum_work_mem = 2GB" $PGDATA/postgresql.conf
     echo "work_mem = 50MB" >> $PGDATA/postgresql.conf
     echo "effective_cache_size = 24GB" >> $PGDATA/postgresql.conf
     echo "synchronous_commit = off" >> $PGDATA/postgresql.conf
-    echo "max_wal_size = 2GB" >> $PGDATA/postgresql.conf
     echo "checkpoint_timeout = 60min" >> $PGDATA/postgresql.conf
     echo "checkpoint_completion_target = 0.9" >> $PGDATA/postgresql.conf
     echo "random_page_cost = 1.0" >> $PGDATA/postgresql.conf
