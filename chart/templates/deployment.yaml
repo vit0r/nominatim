@@ -74,17 +74,13 @@ spec:
             - name: NOMINATIM_DATABASE_DSN
               value: pgsql:host=127.0.0.1;port={{.Values.postgres.service.port}};user=nominatim;password=nominatim;dbname=nominatim
             - name: NOMINATIM_VERSION
+              value: {{ .Chart.AppVersion }}
             - name: POSTGRES_DB
               value: nominatim
-              value: {{ .Chart.AppVersion }}
             - name: NOMINATIM_IMPORT_STYLE
               value: {{ .Values.nominatim.import_style | default "address" }}
             - name: NOMINATIM_REPLICATION_URL
-              value: value: {{ .Values.nominatim.replication.url }}
-            - name: NOMINATIM_REPLICATION_UPDATE_INTERVAL
-              value: {{ .Values.nominatim.replication.update_interval | default "86400" }}
-            - name: NOMINATIM_REPLICATION_RECHECK_INTERVAL=
-              value: {{ .Values.nominatim.replication.recheck_interval | default "900"}}
+              value: {{ .Values.nominatim.replication.url }}
           readinessProbe:
             httpGet:
               path: /status?format=json
