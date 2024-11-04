@@ -44,7 +44,7 @@ spec:
               value: {{ .Values.init.pbf_url }}
           volumeMounts:
             - name: nominatim
-              mountPath: /home/nominatim/data
+              mountPath: /data
       containers:
         - name: postgresql
           securityContext:
@@ -89,7 +89,7 @@ spec:
             # periodSeconds: 600
           volumeMounts:
             - name: nominatim
-              mountPath: /home/nominatim/data
+              mountPath: /data
           resources:
             {{- toYaml .Values.nominatim.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
