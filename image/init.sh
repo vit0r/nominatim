@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "DOWNLOAD INTO $HOME/data/"
-
+chmod 777 -R $HOME/data/
 if [ ! -f "$HOME/data/latest.osm.pbf" ]; then
     echo "init download $NOMINATIM_PBF"
     wget -c $NOMINATIM_PBF -O $HOME/data/latest.osm.pbf
