@@ -5,12 +5,13 @@ do
     echo "postgres is not ready yet"
     sleep 5
 done
-if psql -lqt | cut -d \| -f 1 | grep -qw "nominatim"; then
+if [ ! -f "/data/import.log" ]; then
+    echo "import osm file"
+    nominatim import --osm-file /data/latest.osm.pbf --verbose
+    echo "$(date)" >> /data/import.log
+else
     echo "initialize nominatim update"
     nominatim replication --once
     nominatim refresh --postcodes
-else
-    echo "import osm file"
-    nominatim import --osm-file /data/latest.osm.pbf --verbose
 fi
 gunicorn --bind 0.0.0.0:8000 --access-logfile - --error-logfile - --capture-output -b unix:/data/nominatim.sock -k uvicorn.workers.UvicornWorker nominatim_api.server.falcon.server:run_wsgi
