@@ -45,6 +45,8 @@ spec:
           volumeMounts:
             - name: nominatim
               mountPath: /data
+            - name: postgres-data
+              mountPath: /postgres
       containers:
         - name: postgresql
           securityContext:
