@@ -7,4 +7,5 @@ if [ ! -f "$HOME/data/latest.osm.pbf" ]; then
     wget -c $NOMINATIM_PBF -O $HOME/data/latest.osm.pbf
     echo "end download $NOMINATIM_PBF"
     sleep 2
+    chmod 777 $HOME/data/latest.osm.pbf
 fi
