@@ -32,11 +32,11 @@ spec:
       {{- end }}
       serviceAccountName: {{ include "nominatim.serviceAccountName" . }}
       securityContext:
-        {{- toYaml .Values.nominatim.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.init.podSecurityContext | nindent 8 }}
       initContainers:
         - name: nominatim-init
           securityContext:
-            {{- toYaml .Values.nominatim.securityContext | nindent 12 }}
+            {{- toYaml .Values.init.securityContext | nindent 12 }}
           image: "{{ .Values.init.image.repository }}:{{ .Values.init.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.init.image.pullPolicy }}
           env:

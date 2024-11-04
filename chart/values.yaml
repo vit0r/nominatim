@@ -3,6 +3,10 @@ init:
     repository: vit0r/nominatim-init
     pullPolicy: IfNotPresent
     tag: ~
+  securityContext:
+    readOnlyRootFilesystem: false
+    runAsNonRoot: false
+    runAsUser: 0
   pbf_url: https://download.geofabrik.de/south-america/brazil-latest.osm.pbf
 nominatim:
   replicaCount: 1
@@ -18,13 +22,9 @@ nominatim:
     name: "nominatim"
   podAnnotations: {}
   securityContext:
-    capabilities:
-      drop:
-        - ALL
     readOnlyRootFilesystem: false
     runAsNonRoot: true
     runAsUser: 1001
-    fsGroup: 1001
   podSecurityContext: {}
   persistence:
     storageClassName: standard
