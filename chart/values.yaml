@@ -44,10 +44,10 @@ nominatim:
     #      - nominatim.local
   resources:
     requests:
-      cpu: 500m
+      cpu: 0.5
       memory: 1Gi
     limits:
-      cpu: 2000m
+      cpu: 2
       memory: 4Gi
   autoscaling:
     enabled: false
@@ -74,10 +74,10 @@ postgres:
     port: 5432
   resources:
     requests:
-      cpu: 1000m
+      cpu: 0.5
       memory: 1Gi
     limits:
-      cpu: 2000m
+      cpu: 2
       memory: 4Gi
 nodeSelector: {}
 tolerations: []
