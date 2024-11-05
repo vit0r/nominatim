@@ -11,7 +11,8 @@ if [ ! -f "/data/import.log" ]; then
     nominatim import --osm-file /data/latest.osm.pbf --verbose
     echo "$(date)" >> /data/import.log
 else
-    echo "initialize nominatim update"
+    echo "nominatim update"
+    nominatim replication --init
     nominatim replication --once
     nominatim refresh --postcodes
 fi
