@@ -83,11 +83,11 @@ spec:
             - name: NOMINATIM_IMPORT_STYLE
               value: {{ .Values.nominatim.import_style | default "address" }}
             - name: NOMINATIM_REPLICATION_URL
-              value: {{ .Values.nominatim.replication.url }}
+              value: "{{ .Values.nominatim.replication.url }}"
             - name: NOMINATIM_REPLICATION_UPDATE_INTERVAL
-              value: {{ .Values.nominatim.replication.update_interval }}
+              value: "{{ .Values.nominatim.replication.update_interval }}"
             - name: NOMINATIM_REPLICATION_RECHECK_INTERVAL
-              value: {{ .Values.nominatim.replication.recheck_interval }}
+              value: "{{ .Values.nominatim.replication.recheck_interval }}"
           readinessProbe:
             httpGet:
               path: /status?format=json
