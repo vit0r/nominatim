@@ -16,8 +16,8 @@ nominatim:
     tag: ~
   replication:
     url: https://download.geofabrik.de/south-america/brazil-updates
-    update_interval: 86400
-    recheck_interval: 900
+    update_interval: "86400"
+    recheck_interval: "900"
   serviceAccount:
     create: true
     annotations: {}
