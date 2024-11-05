@@ -72,7 +72,7 @@ postgres:
   securityContext:
     readOnlyRootFilesystem: false
     runAsNonRoot: true
-    runAsUser: 101
+    runAsUser: "101"
   service:
     type: ClusterIP
     port: 5432
