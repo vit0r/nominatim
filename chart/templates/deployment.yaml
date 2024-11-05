@@ -31,8 +31,8 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "nominatim.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.init.podSecurityContext | nindent 8 }}
+      # securityContext:
+      #   {{- toYaml .Values.init.podSecurityContext | nindent 8 }}
       initContainers:
         - name: nominatim-init
           securityContext:
@@ -91,8 +91,6 @@ spec:
             httpGet:
               path: /status?format=json
               port: http
-            # initialDelaySeconds: 5
-            # periodSeconds: 600
           volumeMounts:
             - name: nominatim
               mountPath: /data
