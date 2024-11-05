@@ -59,7 +59,7 @@ ADD nominatim.sh /entrypoint
 RUN chmod +x /entrypoint
 USER ${USERNAME}
 RUN pip install --break-system-packages --no-cache Nominatim-$NOMINATIM_VERSION/packaging/nominatim-api
-RUN pip install --break-system-packages --no-cache falcon uvicorn gunicorn
+RUN pip install --break-system-packages --no-cache falcon uvicorn gunicorn osmium
 RUN rm -rf Nominatim-$NOMINATIM_VERSION
 EXPOSE 8000
 ENTRYPOINT [ "/entrypoint" ]
