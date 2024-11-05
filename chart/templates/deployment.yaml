@@ -56,9 +56,9 @@ spec:
           imagePullPolicy: {{ .Values.postgres.image.pullPolicy }}
           ports:
             - name: tcp
-              containerPort: {{.Values.postgres.service.port}}
+              containerPort: "{{.Values.postgres.service.port}}"
               protocol: TCP
-              port: {{.Values.postgres.service.port}}
+              port: "{{.Values.postgres.service.port}}"
           volumeMounts:
             - name: postgres-data
               mountPath: /data
