@@ -1,11 +1,8 @@
 #!/bin/bash
 
-echo "DOWNLOAD INTO /data"
-
-chmod 777 -R /data
-chmod 777 -R /postgres
-
 if [ ! -f "/data/latest.osm.pbf" ]; then
+    chmod 777 -R /data
+    chmod 777 -R /postgres
     echo "init download $NOMINATIM_PBF"
     wget -c $NOMINATIM_PBF -O /data/latest.osm.pbf
     echo "end download $NOMINATIM_PBF"
