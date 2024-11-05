@@ -35,7 +35,9 @@ spec:
       initContainers:
         - name: nominatim-init
           securityContext:
-            {{- toYaml .Values.init.securityContext | nindent 12 }}
+            readOnlyRootFilesystem: false
+            runAsNonRoot: false
+            runAsUser: 0
           image: "{{ .Values.init.image.repository }}:{{ .Values.init.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.init.image.pullPolicy }}
           env:
