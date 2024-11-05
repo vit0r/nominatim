@@ -10,6 +10,7 @@ if [ ! -f "/data/import.log" ]; then
     echo "import osm file"
     nominatim import --osm-file /data/latest.osm.pbf --verbose
     echo "$(date)" >> /data/import.log
+    nominatim import --continue indexing
 # else
 #     echo "nominatim update"
 #     nominatim replication --init
