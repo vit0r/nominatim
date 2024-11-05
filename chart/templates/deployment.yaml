@@ -31,8 +31,6 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "nominatim.serviceAccountName" . }}
-      # securityContext:
-      #   {{- toYaml .Values.init.podSecurityContext | nindent 8 }}
       initContainers:
         - name: nominatim-init
           securityContext:
