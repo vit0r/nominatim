@@ -10,11 +10,11 @@ if [ ! -f "/data/import.log" ]; then
     echo "import osm file"
     nominatim import --osm-file /data/latest.osm.pbf --verbose
     echo "$(date)" >> /data/import.log
-else
-    echo "nominatim update"
-    nominatim replication --init
-    nominatim replication --once
-    nominatim refresh --postcodes
+# else
+#     echo "nominatim update"
+#     nominatim replication --init
+#     nominatim replication --once
+#     nominatim refresh --postcodes
 fi
 
 gunicorn --bind 0.0.0.0:8000 --access-logfile - --error-logfile - --capture-output \
