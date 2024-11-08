@@ -2,7 +2,8 @@
 
 if [ ! -d "$PGDATA" ]; then
     echo "init permissions $PGDATA"
-    chmod 777 -R /postgres
+    mkdir -p $PGDATA
+    chmod 777 -R $PGDATA
 fi
 
 if [ ! -f "/data/latest.osm.pbf" ]; then
