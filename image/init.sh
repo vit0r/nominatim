@@ -1,8 +1,12 @@
 #!/bin/bash
 
+if [ ! -d $PGDATA ]; then
+    echo "init permissions $PGDATA"
+    chmod 777 -R /postgres
+fi
+
 if [ ! -f "/data/latest.osm.pbf" ]; then
     chmod 777 -R /data
-    chmod 777 -R /postgres
     echo "init download $NOMINATIM_PBF"
     wget -c $NOMINATIM_PBF -O /data/latest.osm.pbf
     echo "end download $NOMINATIM_PBF"
