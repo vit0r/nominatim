@@ -48,6 +48,8 @@ spec:
               mountPath: /data
             - name: postgres-data
               mountPath: /postgres
+          resources:
+            {{- toYaml .Values.init.resources | nindent 12 }}
       containers:
         - name: postgresql
           securityContext:

@@ -4,6 +4,13 @@ init:
     pullPolicy: IfNotPresent
     tag: ~
   pbf_url: https://download.geofabrik.de/south-america/brazil-latest.osm.pbf
+  resources:
+    requests:
+      cpu: 500m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
 nominatim:
   replicaCount: 1
   image:
