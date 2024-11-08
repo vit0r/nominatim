@@ -71,7 +71,7 @@ ENV USERNAME=nominatim
 ENV USERHOME=/home/nominatim
 ENV PATH=${PATH}:${USERHOME}/.local/bin
 ENV POSTGRES_VERSION=17
-ENV PGDATA=/data/postgres/${POSTGRES_VERSION}
+ENV PGDATA=/postgres/postgres/${POSTGRES_VERSION}
 RUN useradd -u 1001 -ms /bin/bash ${USERNAME}
 WORKDIR ${USERHOME}
 RUN apt update && apt install wget vim -y
@@ -90,7 +90,7 @@ ENV PGTZ=America/Sao_Paulo
 RUN apt update && apt install -y wget curl gpg net-tools vim
 ENV POSTGRES_VERSION=17
 ENV PGDATA=/data/postgres/${POSTGRES_VERSION}
-ENV PGHOST=/data/postgres/${POSTGRES_VERSION}
+ENV PGHOST=/data/postgres/${POSTGRES_VERSION}/run
 ENV PATH=${PATH}:/usr/lib/postgresql/$POSTGRES_VERSION/bin
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt noble-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 RUN curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor \

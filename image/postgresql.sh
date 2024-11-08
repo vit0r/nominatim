@@ -25,8 +25,8 @@ if [ ! -d $PGDATA ]; then
     sed -i 's/shared_buffers = 128MB/shared_buffers = 2GB/' $PGDATA/postgresql.conf
     sed -i 's/max_wal_size = 1GB/max_wal_size = 4GB/' $PGDATA/postgresql.conf
 fi
-
-pg_ctl -w -m immediate -l $PGDATA/postgres.log -o "-k $PGDATA -c config_file=$PGDATA/postgresql.conf" start
+mkdir -p $PGDATA/run
+pg_ctl -w -m immediate -l $PGDATA/postgres.log -o "-c config_file=$PGDATA/postgresql.conf" start
 psql -U postgres -d postgres -c "CREATE ROLE nominatim WITH LOGIN PASSWORD 'nominatim' SUPERUSER;"
 psql -U postgres -d postgres -c "CREATE ROLE \"www-data\" NOSUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN NOREPLICATION NOBYPASSRLS;"
 echo "" > $PGDATA/postgres.log
