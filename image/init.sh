@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ ! -d $PGDATA ]; then
+if [ ! -d "$PGDATA" ]; then
     echo "init permissions $PGDATA"
     chmod 777 -R /postgres
 fi

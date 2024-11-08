@@ -70,6 +70,8 @@ ENV LANG=C.UTF-8
 ENV USERNAME=nominatim
 ENV USERHOME=/home/nominatim
 ENV PATH=${PATH}:${USERHOME}/.local/bin
+ENV POSTGRES_VERSION=17
+ENV PGDATA=/data/postgres/${POSTGRES_VERSION}
 RUN useradd -u 1001 -ms /bin/bash ${USERNAME}
 WORKDIR ${USERHOME}
 RUN apt update && apt install wget vim -y
