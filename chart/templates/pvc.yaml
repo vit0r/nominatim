@@ -9,7 +9,7 @@ spec:
   storageClassName: {{ .Values.nominatim.persistence.storageClassName }}
   resources:
     requests:
-      storage: {{ .Values.nominatim.persistence.size | default "10G" }}
+      storage: {{ .Values.nominatim.persistence.size | default "50Gi" }}
   accessModes:
     - {{ .Values.nominatim.persistence.accessMode | default "ReadWriteOnce" }}
 ---
@@ -24,6 +24,6 @@ spec:
   storageClassName: {{ .Values.postgres.persistence.storageClassName }}
   resources:
     requests:
-      storage: {{ .Values.postgres.persistence.size | default "100G" }}
+      storage: {{ .Values.postgres.persistence.size | default "100Gi" }}
   accessModes:
     - {{ .Values.postgres.persistence.accessMode | default "ReadWriteOnce" }}
