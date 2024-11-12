@@ -19,6 +19,7 @@ if [ ! -f "/data/import.log" ]; then
 fi
 
 gunicorn --bind 0.0.0.0:8000 --access-logfile - --error-logfile - --capture-output \
+ -w 4 \
  -b unix:/data/nominatim.sock \
  -k uvicorn.workers.UvicornWorker \
  nominatim_api.server.falcon.server:run_wsgi
