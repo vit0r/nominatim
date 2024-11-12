@@ -7,15 +7,10 @@ do
 done
 
 if [ ! -f "/data/import.log" ]; then
+    dropdb nominatim -f
     echo "import osm file"
     nominatim import --osm-file /data/latest.osm.pbf --verbose
     echo "$(date)" >> /data/import.log
-    # nominatim import --continue indexing
-# else
-#     echo "nominatim update"
-#     nominatim replication --init
-#     nominatim replication --once
-#     nominatim refresh --postcodes
 fi
 
 gunicorn --bind 0.0.0.0:8000 --access-logfile - --error-logfile - --capture-output \
