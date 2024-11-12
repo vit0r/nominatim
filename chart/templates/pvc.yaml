@@ -24,6 +24,6 @@ spec:
   storageClassName: {{ .Values.postgres.persistence.storageClassName }}
   resources:
     requests:
-      storage: {{ .Values.postgres.persistence.size | default "50G" }}
+      storage: {{ .Values.postgres.persistence.size | default "100G" }}
   accessModes:
     - {{ .Values.postgres.persistence.accessMode | default "ReadWriteOnce" }}
