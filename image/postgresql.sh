@@ -12,7 +12,7 @@ if [ ! -d $PGDATA ]; then
     echo "work_mem = 50MB" >> $PGDATA/postgresql.conf
     echo "effective_cache_size = 24GB" >> $PGDATA/postgresql.conf
     echo "synchronous_commit = off" >> $PGDATA/postgresql.conf
-    echo "checkpoint_timeout = 60min" >> $PGDATA/postgresql.conf
+    echo "checkpoint_timeout = 10min" >> $PGDATA/postgresql.conf
     echo "checkpoint_completion_target = 0.9" >> $PGDATA/postgresql.conf
     echo "random_page_cost = 1.0" >> $PGDATA/postgresql.conf
     echo "wal_level = minimal" >> $PGDATA/postgresql.conf
