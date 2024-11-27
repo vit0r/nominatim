@@ -7,7 +7,7 @@ do
 done
 
 if [ ! -f "/data/import.log" ]; then
-    dropdb nominatim -f
+    dropdb -h localhost nominatim -f
     echo "import osm file"
     nominatim import --osm-file /data/latest.osm.pbf --verbose
     echo "$(date)" >> /data/import.log
