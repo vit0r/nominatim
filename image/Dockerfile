@@ -4,6 +4,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8
 ENV USERNAME=nominatim
 ENV USERHOME=/home/nominatim
+ENV PROJECT_DIR=${USERHOME}
 ENV PATH=${PATH}:${USERHOME}/.local/bin
 RUN useradd -u 1001 -ms /bin/bash ${USERNAME}
 WORKDIR ${USERHOME}
@@ -69,6 +70,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8
 ENV USERNAME=nominatim
 ENV USERHOME=/home/nominatim
+ENV PROJECT_DIR=${USERHOME}
 ENV PATH=${PATH}:${USERHOME}/.local/bin
 ENV POSTGRES_VERSION=17
 ENV PGDATA=/postgres/postgres/${POSTGRES_VERSION}

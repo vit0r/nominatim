@@ -9,16 +9,8 @@ done
 if [ ! -f "/data/import.log" ]; then
     dropdb -h localhost nominatim -f
     echo "import osm file"
-    nominatim import --osm-file /data/latest.osm.pbf --verbose
+    nominatim import --osm-file /data/latest.osm.pbf --all
     echo "$(date)" >> /data/import.log
 fi
-
-gunicorn --bind 0.0.0.0:8000 \
- --access-logfile - \
- --error-logfile - \
- --capture-output \
- --log-level=debug \
- -w 4 \
- -b unix:/data/nominatim.sock \
- -k uvicorn.workers.UvicornWorker \
- nominatim_api.server.falcon.server:run_wsgi
+# nominatim admin --check-database
+nominatim serve --engine starlette
