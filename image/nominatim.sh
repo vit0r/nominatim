@@ -17,5 +17,5 @@ gunicorn --access-logfile - \
     --error-logfile - \
     --capture-output \
     --log-level=debug \
-    -b unix:/run/nominatim.sock \
+    -b unix:/data/nominatim.sock \
     -w 4 -k uvicorn.workers.UvicornWorker "nominatim_api.server.falcon.server:run_wsgi()"
