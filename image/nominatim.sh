@@ -12,5 +12,5 @@ if [ ! -f "/data/import.log" ]; then
     nominatim import --osm-file /data/latest.osm.pbf --all
     echo "$(date)" >> /data/import.log
 fi
-# nominatim admin --check-database
-nominatim serve --engine starlette
+
+gunicorn -b unix:/run/nominatim.sock -w 4 -k uvicorn.workers.UvicornWorker "nominatim_api.server.falcon.server:run_wsgi()"
