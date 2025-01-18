@@ -13,4 +13,9 @@ if [ ! -f "/data/import.log" ]; then
     echo "$(date)" >> /data/import.log
 fi
 
-gunicorn -b unix:/run/nominatim.sock -w 4 -k uvicorn.workers.UvicornWorker "nominatim_api.server.falcon.server:run_wsgi()"
+gunicorn --access-logfile - \
+    --error-logfile - \
+    --capture-output \
+    --log-level=debug \
+    -b unix:/run/nominatim.sock \
+    -w 4 -k uvicorn.workers.UvicornWorker "nominatim_api.server.falcon.server:run_wsgi()"
