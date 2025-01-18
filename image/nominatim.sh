@@ -9,6 +9,7 @@ do
 done
 
 if [ ! -f "/data/import.log" ]; then
+    psql -h localhost -c "DROP DATABASE IF EXISTS nominatim;"
     dropdb -h localhost nominatim -f
     echo "import osm file"
     nominatim import --osm-file /data/latest.osm.pbf --verbose
