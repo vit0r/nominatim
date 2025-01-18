@@ -13,7 +13,8 @@ if [ ! -f "/data/import.log" ]; then
     echo "$(date)" >> /data/import.log
 fi
 
-gunicorn --access-logfile - \
+gunicorn --bind 0.0.0.0:8000 \
+    --access-logfile - \
     --error-logfile - \
     --capture-output \
     --log-level=debug \
