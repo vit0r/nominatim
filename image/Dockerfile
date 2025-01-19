@@ -41,7 +41,8 @@ RUN apt-get update -qq && apt-get -y install \
     python3-psycopg \
     python3-sqlalchemy \
     python3-asyncpg \
-    postgresql-client
+    postgresql-client \
+    osm2pgsql
 ENV NOMINATIM_VERSION=4.5.0
 RUN wget --no-check-certificate \
     https://www.nominatim.org/release/Nominatim-${NOMINATIM_VERSION}.tar.bz2 \
@@ -59,8 +60,8 @@ RUN chown $USERNAME:root -R Nominatim-$NOMINATIM_VERSION
 ADD nominatim.sh /entrypoint
 RUN chmod +x /entrypoint
 USER ${USERNAME}
-RUN pip install --break-system-packages --no-cache Nominatim-$NOMINATIM_VERSION/packaging/nominatim-api
-RUN pip install --break-system-packages --no-cache falcon uvicorn gunicorn osmium
+RUN pip install --break-system-packages --no-cache Nominatim-$NOMINATIM_VERSION/packaging/nominatim-db Nominatim-$NOMINATIM_VERSION/packaging/nominatim-api
+RUN pip install --break-system-packages --no-cache psycopg[binary] falcon uvicorn gunicorn osmium
 RUN rm -rf Nominatim-$NOMINATIM_VERSION
 EXPOSE 8000
 ENTRYPOINT [ "/entrypoint" ]

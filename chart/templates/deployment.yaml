@@ -76,6 +76,10 @@ spec:
               containerPort: {{ .Values.nominatim.containerPort | default 8000 }}
               protocol: TCP
           env:
+            - name: NOMINATIM_REQUEST_TIMEOUT
+              value: 60
+            - name: NOMINATIM_QUERY_TIMEOUT
+              value: 60
             - name: NOMINATIM_DATABASE_DSN
               value: pgsql:host=127.0.0.1;port={{.Values.postgres.service.port}};user=nominatim;password=nominatim;dbname=nominatim
             - name: NOMINATIM_VERSION
