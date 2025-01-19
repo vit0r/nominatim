@@ -73,7 +73,7 @@ ENV USERNAME=nominatim
 ENV USERHOME=/home/nominatim
 ENV PROJECT_DIR=${USERHOME}
 ENV PATH=${PATH}:${USERHOME}/.local/bin
-ENV POSTGRES_VERSION=17
+ENV POSTGRES_VERSION=16
 ENV PGDATA=/postgres/postgres/${POSTGRES_VERSION}
 RUN useradd -u 1001 -ms /bin/bash ${USERNAME}
 WORKDIR ${USERHOME}
@@ -91,7 +91,7 @@ ENV PGPASSWORD=postgres
 ENV PGDATABASE=postgres
 ENV PGTZ=America/Sao_Paulo
 RUN apt update && apt install -y wget curl gpg net-tools vim
-ENV POSTGRES_VERSION=17
+ENV POSTGRES_VERSION=16
 ENV PGDATA=/data/postgres/${POSTGRES_VERSION}
 ENV PGHOST=/data/postgres/${POSTGRES_VERSION}/run
 ENV PATH=${PATH}:/usr/lib/postgresql/$POSTGRES_VERSION/bin

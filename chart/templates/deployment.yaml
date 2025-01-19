@@ -38,7 +38,7 @@ spec:
             readOnlyRootFilesystem: false
             runAsNonRoot: false
             runAsUser: 0
-          image: "{{ .Values.init.image.repository }}:{{ .Values.init.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.init.image.repository }}:{{ .Chart.AppVersion }}-{{ .Values.build_version }}"
           imagePullPolicy: {{ .Values.init.image.pullPolicy }}
           env:
             - name: NOMINATIM_PBF
@@ -54,7 +54,7 @@ spec:
         - name: postgresql
           securityContext:
             {{- toYaml .Values.postgres.securityContext | nindent 12 }}
-          image: "{{ .Values.postgres.image.repository }}:{{ .Values.postgres.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.postgres.image.repository }}:{{ .Chart.AppVersion }}-{{ .Values.build_version }}"
           imagePullPolicy: {{ .Values.postgres.image.pullPolicy }}
           ports:
             - name: tcp
@@ -69,7 +69,7 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.nominatim.securityContext | nindent 12 }}
-          image: "{{ .Values.nominatim.image.repository }}:{{ .Values.nominatim.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.nominatim.image.repository }}:{{ .Chart.AppVersion }}-{{ .Values.build_version }}"
           imagePullPolicy: {{ .Values.nominatim.image.pullPolicy }}
           ports:
             - name: http
@@ -77,9 +77,9 @@ spec:
               protocol: TCP
           env:
             - name: NOMINATIM_REQUEST_TIMEOUT
-              value: 60
+              value: "60"
             - name: NOMINATIM_QUERY_TIMEOUT
-              value: 60
+              value: "60"
             - name: NOMINATIM_DATABASE_DSN
               value: pgsql:host=127.0.0.1;port={{.Values.postgres.service.port}};user=nominatim;password=nominatim;dbname=nominatim
             - name: NOMINATIM_VERSION
