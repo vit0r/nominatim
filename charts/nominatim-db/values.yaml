@@ -1,0 +1,30 @@
+replicaCount: 1
+image:
+  repository: vit0r/postgres
+  pullPolicy: IfNotPresent
+  tag: ~
+imagePullSecrets: []
+podAnnotations: {}
+persistence:
+  storageClassName: standard
+securityContext:
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+  runAsUser: 101
+service:
+  type: ClusterIP
+  port: 5432
+resources:
+  requests:
+    cpu: 2
+    memory: 2Gi
+  limits:
+    cpu: 4
+    memory: 4Gi
+nodeSelector: {}
+tolerations: []
+affinity: {}
+nameOverride: "nominatim"
+fullnameOverride: "nominatim"
+strategy:
+  type: Recreate
