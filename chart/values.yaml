@@ -1,4 +1,4 @@
-build_version: 50
+build_version: 58
 init:
   image:
     repository: vit0r/nominatim-init

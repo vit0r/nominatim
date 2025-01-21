@@ -4,7 +4,7 @@ set -e
 
 until [ "$(pg_isready -h 127.0.0.1)" = "127.0.0.1:5432 - accepting connections" ]
 do 
-    echo "postgres is not ready yet"
+    echo "postgres localhost is not ready yet"
     sleep 2
 done
 
