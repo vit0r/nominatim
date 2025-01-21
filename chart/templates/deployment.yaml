@@ -73,8 +73,9 @@ spec:
           imagePullPolicy: {{ .Values.nominatim.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.nominatim.containerPort | default 8000 }}
+              containerPort: {{ .Values.nominatim.service.port | default 8000 }}
               protocol: TCP
+              port: {{.Values.nominatim.service.port}}
           env:
             - name: NOMINATIM_REQUEST_TIMEOUT
               value: "60"
