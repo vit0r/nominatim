@@ -60,7 +60,7 @@ spec:
             - name: tcp
               containerPort: {{.Values.postgres.service.port}}
               protocol: TCP
-              port: {{.Values.postgres.service.port}}
+              # port: {{.Values.postgres.service.port}}
           volumeMounts:
             - name: postgres-data
               mountPath: /data
@@ -75,7 +75,7 @@ spec:
             - name: http
               containerPort: {{ .Values.nominatim.service.port | default 8000 }}
               protocol: TCP
-              port: {{.Values.nominatim.service.port}}
+              # port: {{.Values.nominatim.service.port}}
           env:
             - name: NOMINATIM_REQUEST_TIMEOUT
               value: "60"
