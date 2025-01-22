@@ -33,7 +33,7 @@ spec:
             readOnlyRootFilesystem: false
             runAsNonRoot: false
             runAsUser: 0
-          image: "{{ .Values.init.image.repository }}:{{ .Chart.AppVersion }}-{{ .Values.build_version }}"
+          image: "{{ .Values.init.image.repository }}:{{ .Chart.AppVersion }}-{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.init.image.pullPolicy }}
           env:
             - name: NOMINATIM_PBF
@@ -47,7 +47,7 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image:  "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}-{{ .Values.build_version }}"
+          image:  "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}-{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: postgres
