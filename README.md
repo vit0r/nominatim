@@ -28,5 +28,6 @@ helm upgrade -i metrics-server metrics-server/metrics-server -n metrics-server -
 ## install helm
 
 ```console
-helm upgrade -i nominatim charts/nominatim-api -n nominatim --create-namespace
+helm upgrade -i nominatim-api charts/nominatim-api -n nominatim --create-namespace
+helm upgrade -i nominatim-db charts/nominatim-db -n nominatim --create-namespace
 ```

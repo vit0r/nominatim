@@ -1,10 +1,5 @@
 #!/bin/bash
 
-if [ ! -d "$PGDATA" ]; then
-    echo "init permissions postgres"
-    chmod 777 -R /postgres
-fi
-
 if [ ! -f "/data/latest.osm.pbf" ]; then
     chmod 777 -R /data
     echo "init download $NOMINATIM_PBF"

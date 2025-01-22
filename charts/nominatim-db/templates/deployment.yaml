@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "nominatim-db.fullname" . }}
+  name: {{ .Chart.Name }}
   labels:
     {{- include "nominatim-db.labels" . | nindent 4 }}
 spec:
@@ -24,27 +24,35 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "nominatim-db.serviceAccountName" . }}
+      serviceAccountName: {{ .Chart.Name }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: postgres-init
+          securityContext:
+            readOnlyRootFilesystem: false
+            runAsNonRoot: false
+            runAsUser: 0
+          image: "{{ .Values.init.image.repository }}:{{ .Chart.AppVersion }}-{{ .Values.build_version }}"
+          imagePullPolicy: {{ .Values.init.image.pullPolicy }}
+          env:
+            - name: NOMINATIM_PBF
+              value: {{ .Values.init.pbf_url }}
+          volumeMounts:
+            - name: {{ .Chart.Name }}
+              mountPath: /data
+          resources:
+            {{- toYaml .Values.init.resources | nindent 12 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image:  "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}-{{ .Values.build_version }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: 80
+            - name: postgres
+              containerPort:  {{ .Values.service.port }}
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
@@ -59,3 +67,7 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+        - name: {{ .Chart.Name }}
+          persistentVolumeClaim:
+            claimName: {{ .Chart.Name }}

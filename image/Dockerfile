@@ -73,12 +73,27 @@ ENV USERNAME=nominatim
 ENV USERHOME=/home/nominatim
 ENV PROJECT_DIR=${USERHOME}
 ENV PATH=${PATH}:${USERHOME}/.local/bin
+RUN useradd -u 1001 -ms /bin/bash ${USERNAME}
+WORKDIR ${USERHOME}
+RUN apt update && apt install wget vim -y
+ADD nominatim_api_init.sh /entrypoint
+RUN chmod +x /entrypoint
+USER ${USERNAME}
+ENTRYPOINT [ "/entrypoint" ]
+
+FROM debian:bookworm-slim as postgres-init
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LANG=C.UTF-8
+ENV USERNAME=nominatim
+ENV USERHOME=/home/nominatim
+ENV PROJECT_DIR=${USERHOME}
+ENV PATH=${PATH}:${USERHOME}/.local/bin
 ENV POSTGRES_VERSION=16
 ENV PGDATA=/postgres/postgres/${POSTGRES_VERSION}
 RUN useradd -u 1001 -ms /bin/bash ${USERNAME}
 WORKDIR ${USERHOME}
 RUN apt update && apt install wget vim -y
-ADD init.sh /entrypoint
+ADD postgres_init.sh /entrypoint
 RUN chmod +x /entrypoint
 USER ${USERNAME}
 ENTRYPOINT [ "/entrypoint" ]

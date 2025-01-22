@@ -1,4 +1,5 @@
 *
 !nominatim.sh
-!init.sh
+!nominatim_api_init.sh
 !postgresql.sh
+!postgresql_init.sh
