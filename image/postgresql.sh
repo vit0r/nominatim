@@ -2,10 +2,10 @@
 
 if [ ! -d $PGDATA ]; then
     initdb -D $PGDATA
-    echo "local all all trust" > $PGDATA/pg_hba.conf
-    echo "host nominatim nominatim 0.0.0.0/0 md5" >> $PGDATA/pg_hba.conf
-    echo "host nominatim www-data 0.0.0.0/0 md5" >> $PGDATA/pg_hba.conf
+    echo "local all all trust" >> $PGDATA/pg_hba.conf
     echo "host all all 127.0.0.1/32 md5" >> $PGDATA/pg_hba.conf
+    echo "host all nominatim 0.0.0.0/0 md5" >> $PGDATA/pg_hba.conf
+    echo "host nominatim www-data 0.0.0.0/0 md5" >> $PGDATA/pg_hba.conf
     echo "maintenance_work_mem = 10GB" >> $PGDATA/postgresql.conf
     echo "autovacuum_work_mem = 2GB" $PGDATA/postgresql.conf
     echo "work_mem = 50MB" >> $PGDATA/postgresql.conf
