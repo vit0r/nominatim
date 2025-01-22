@@ -2,7 +2,7 @@ init:
   image:
     repository: vit0r/postgres-init
     pullPolicy: IfNotPresent
-    tag: 64
+    tag: 65
   resources:
     requests:
       cpu: 500m
@@ -14,7 +14,7 @@ replicaCount: 1
 image:
   repository: vit0r/postgres
   pullPolicy: IfNotPresent
-  tag: 64
+  tag: 65
 imagePullSecrets: []
 podAnnotations: {}
 persistence:
