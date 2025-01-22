@@ -1,9 +1,8 @@
-build_version: 60
 init:
   image:
     repository: vit0r/postgres-init
     pullPolicy: IfNotPresent
-    tag: ~
+    tag: 62
   resources:
     requests:
       cpu: 500m
@@ -15,7 +14,7 @@ replicaCount: 1
 image:
   repository: vit0r/postgres
   pullPolicy: IfNotPresent
-  tag: ~
+  tag: 62
 imagePullSecrets: []
 podAnnotations: {}
 persistence:

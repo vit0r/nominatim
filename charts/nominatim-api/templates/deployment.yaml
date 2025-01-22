@@ -33,7 +33,7 @@ spec:
             readOnlyRootFilesystem: false
             runAsNonRoot: false
             runAsUser: 0
-          image: "{{ .Values.init.image.repository }}:{{ .Chart.AppVersion }}-{{ .Values.build_version }}"
+          image: "{{ .Values.init.image.repository }}:{{ .Chart.AppVersion }}-{{ .Values.init.image.tag }}"
           imagePullPolicy: {{ .Values.init.image.pullPolicy }}
           env:
             - name: NOMINATIM_PBF
@@ -47,19 +47,24 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}-{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
+          volumeMounts:
+            - name: {{ .Chart.Name }}
+              mountPath: /data
           env:
+            - name: NOMINATIM_DATASE_HOST
+              value: nominatim-db.nominatim.svc.cluster.local
             - name: NOMINATIM_REQUEST_TIMEOUT
               value: "60"
             - name: NOMINATIM_QUERY_TIMEOUT
               value: "60"
             - name: NOMINATIM_DATABASE_DSN
-              value: pgsql:host=nominatim-db.nominatim.svc.cluster.local;port=5432;user=nominatim;password=nominatim;dbname=nominatim
+              value: pgsql:host=$NOMINATIM_DATASE_HOST;port=5432;user=nominatim;password=nominatim;dbname=nominatim
             - name: NOMINATIM_VERSION
               value: {{ .Chart.AppVersion }}
             - name: POSTGRES_DB

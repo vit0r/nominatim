@@ -2,7 +2,7 @@
 
 set -e
 
-until [ "$(pg_isready -h 127.0.0.1)" = "127.0.0.1:5432 - accepting connections" ]
+until [ "$(pg_isready -h $NOMINATIM_DATASE_HOST)" = "$NOMINATIM_DATASE_HOST:5432 - accepting connections" ]
 do 
     echo "postgres localhost is not ready yet"
     sleep 2

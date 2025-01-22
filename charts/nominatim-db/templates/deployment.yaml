@@ -53,6 +53,9 @@ spec:
             - name: postgres
               containerPort:  {{ .Values.service.port }}
               protocol: TCP
+          volumeMounts:
+            - name: {{ .Chart.Name }}
+              mountPath: /data
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

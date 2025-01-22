@@ -1,9 +1,8 @@
-build_version: 60
 init:
   image:
     repository: vit0r/nominatim-init
     pullPolicy: IfNotPresent
-    tag: ~
+    tag: 62
   pbf_url: https://download.geofabrik.de/south-america/brazil-latest.osm.pbf
   resources:
     requests:
@@ -16,7 +15,7 @@ replicaCount: 1
 image:
   repository: vit0r/nominatim
   pullPolicy: IfNotPresent
-  tag: ~
+  tag: 62
 replication:
   url: https://download.geofabrik.de/south-america/brazil-updates
   update_interval: "86400"
