@@ -65,4 +65,4 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 strategy:
-  type: Recreate
+  type: RollingUpdate
