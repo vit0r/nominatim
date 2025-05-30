@@ -42,11 +42,9 @@ spec:
           env:
             - name: NOMINATIM_PBF
               value: {{ .Values.init.pbf_url }}
-          {{- if .Values.init.enabled }}
           volumeMounts:
             - name: {{ .Chart.Name }}
               mountPath: /data
-          {{- end }}
           resources:
             {{- toYaml .Values.init.resources | nindent 12 }}
       containers:
