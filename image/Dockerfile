@@ -1,7 +1,10 @@
-
 FROM ubuntu:24.04 as nominatim
 ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=America/Sao_Paulo
 ENV LANG=C.UTF-8
+ENV PGUSER=postgres
+ENV PGPASSWORD=postgres
+ENV PGDATABASE=postgres
 ENV USERNAME=nominatim
 ENV USERHOME=/home/nominatim
 ENV PROJECT_DIR=${USERHOME}
@@ -69,6 +72,7 @@ ENTRYPOINT [ "/entrypoint" ]
 
 FROM debian:bookworm-slim as nominatim-init
 ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=America/Sao_Paulo
 ENV LANG=C.UTF-8
 ENV USERNAME=nominatim
 ENV USERHOME=/home/nominatim
@@ -84,6 +88,7 @@ ENTRYPOINT [ "/entrypoint" ]
 
 FROM debian:bookworm-slim as postgres-init
 ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=America/Sao_Paulo
 ENV LANG=C.UTF-8
 ENV USERNAME=nominatim
 ENV USERHOME=/home/nominatim
@@ -105,6 +110,7 @@ ENV LANG=C.UTF-8
 ENV PGUSER=postgres
 ENV PGPASSWORD=postgres
 ENV PGDATABASE=postgres
+ENV TZ=America/Sao_Paulo
 ENV PGTZ=America/Sao_Paulo
 RUN apt update && apt install -y wget curl gpg net-tools vim
 ENV POSTGRES_VERSION=16

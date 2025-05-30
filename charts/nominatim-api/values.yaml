@@ -1,4 +1,5 @@
 init:
+  enabled: false
   image:
     repository: vit0r/nominatim-init
     pullPolicy: IfNotPresent
