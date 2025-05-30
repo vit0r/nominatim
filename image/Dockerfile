@@ -2,9 +2,9 @@ FROM ubuntu:24.04 as nominatim
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=America/Sao_Paulo
 ENV LANG=C.UTF-8
-ENV PGUSER=postgres
-ENV PGPASSWORD=postgres
-ENV PGDATABASE=postgres
+ENV PGUSER=nominatim
+ENV PGPASSWORD=nominatim
+ENV PGDATABASE=nominatim
 ENV USERNAME=nominatim
 ENV USERHOME=/home/nominatim
 ENV PROJECT_DIR=${USERHOME}
