@@ -63,6 +63,8 @@ spec:
           env:
             - name: NOMINATIM_DATASE_HOST
               value: nominatim-db.nominatim.svc.cluster.local
+            - name: NOMINATIM_DATASE_PORT
+              value: "5433"
             - name: NOMINATIM_REQUEST_TIMEOUT
               value: "60"
             - name: NOMINATIM_QUERY_TIMEOUT
