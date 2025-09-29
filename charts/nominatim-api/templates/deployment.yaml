@@ -68,7 +68,7 @@ spec:
             - name: NOMINATIM_QUERY_TIMEOUT
               value: "60"
             - name: NOMINATIM_DATABASE_DSN
-              value: pgsql:host=nominatim-db.nominatim.svc.cluster.local;port=5432;user=nominatim;password=nominatim;dbname=nominatim
+              value: pgsql:host=nominatim-db.nominatim.svc.cluster.local;port=5433;user=nominatim;password=nominatim;dbname=nominatim
             - name: NOMINATIM_VERSION
               value: {{ .Chart.AppVersion }}
             - name: POSTGRES_DB
