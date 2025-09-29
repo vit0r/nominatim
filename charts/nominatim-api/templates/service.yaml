@@ -7,9 +7,9 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - name: tcp
-      port: 5433
-      targetPort: 5432
+    - name: http
+      port: {{ .Values.service.port }}
+      targetPort: http
       protocol: TCP
   selector:
     {{- include "nominatim-api.selectorLabels" . | nindent 4 }}

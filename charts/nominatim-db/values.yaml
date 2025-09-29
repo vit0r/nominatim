@@ -25,7 +25,7 @@ securityContext:
   runAsUser: 101
 service:
   type: ClusterIP
-  port: 5432
+  port: 5433
 resources:
   requests:
     cpu: 2
