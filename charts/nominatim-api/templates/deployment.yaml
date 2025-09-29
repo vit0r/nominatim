@@ -31,6 +31,7 @@ spec:
       serviceAccountName: {{ .Chart.Name }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- if .Values.init.enabled }}
       initContainers:
         - name: nominatim-init
           securityContext:
@@ -47,6 +48,7 @@ spec:
               mountPath: /data
           resources:
             {{- toYaml .Values.init.resources | nindent 12 }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
