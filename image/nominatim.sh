@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-until [ "$(pg_isready -h $NOMINATIM_DATASE_HOST)" = "$NOMINATIM_DATASE_HOST:5433 - accepting connections" ]
+until [ "$(pg_isready -h $NOMINATIM_DATASE_HOST -p $NOMINATIM_DATASE_PORT)" = "$NOMINATIM_DATASE_HOST:$NOMINATIM_DATASE_PORT - accepting connections" ]
 do 
     echo "postgres $NOMINATIM_DATASE_HOST is not ready yet"
     sleep 2
