@@ -8,8 +8,8 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - name: postgres
-      port: {{ .Values.service.port }}
-      targetPort: postgres
+      port: 5433
+      targetPort: 5432
       protocol: TCP
   selector:
     {{- include "nominatim-db.selectorLabels" . | nindent 4 }}
