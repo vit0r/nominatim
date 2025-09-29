@@ -55,7 +55,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: postgres
-              containerPort:  5432
+              containerPort:  5433
               protocol: TCP
           volumeMounts:
             - name: {{ .Chart.Name }}

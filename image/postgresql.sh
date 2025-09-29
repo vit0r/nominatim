@@ -1,5 +1,4 @@
 #!/bin/bash
-
 if [ ! -d $PGDATA ]; then
     initdb -D $PGDATA
     echo "local all all trust" >> $PGDATA/pg_hba.conf
@@ -7,6 +6,7 @@ if [ ! -d $PGDATA ]; then
     echo "host all nominatim 0.0.0.0/0 md5" >> $PGDATA/pg_hba.conf
     echo "host nominatim www-data 0.0.0.0/0 md5" >> $PGDATA/pg_hba.conf
     echo "listen_addresses = '*'" >> $PGDATA/postgresql.conf
+    echo "port = 5433" >> $PGDATA/postgresql.conf
     echo "maintenance_work_mem = 10GB" >> $PGDATA/postgresql.conf
     echo "autovacuum_work_mem = 2GB" $PGDATA/postgresql.conf
     echo "work_mem = 50MB" >> $PGDATA/postgresql.conf
@@ -25,6 +25,7 @@ if [ ! -d $PGDATA ]; then
     sed -i 's/shared_buffers = 128MB/shared_buffers = 2GB/' $PGDATA/postgresql.conf
     sed -i 's/max_wal_size = 1GB/max_wal_size = 4GB/' $PGDATA/postgresql.conf
 fi
+echo "port = 5433" >> $PGDATA/postgresql.conf
 mkdir -p $PGHOST
 pg_ctl -w -m immediate -l $PGDATA/postgres.log -o "-k $PGHOST -c config_file=$PGDATA/postgresql.conf" start
 psql -U postgres -d postgres -c "CREATE ROLE nominatim WITH LOGIN PASSWORD 'nominatim' SUPERUSER;"
