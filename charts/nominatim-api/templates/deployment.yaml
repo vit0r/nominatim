@@ -54,8 +54,8 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}-{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: {{ .Values.service.port }}
+            - name: tcp
+              containerPort: 5432
               protocol: TCP
           volumeMounts:
             - name: {{ .Chart.Name }}
